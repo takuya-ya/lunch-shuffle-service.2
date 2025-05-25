@@ -7,20 +7,20 @@
 </head>
 <body>
   <h1>
-    <a href="./index.php">シャッフルランチ</a>
+    <a href="/">シャッフルランチ</a>
   </h1>
 
   <h2>社員の登録</h2>
-  <form action="employee.php" method="post">
 
   <?php if (count($errors)) : ?>
     <ul>
       <?php foreach ( $errors as $error): ?>
-          <li><?php echo $error ?></li>
-      <?php endforeach; ?>
-    </ul>
-  <?php endif ?>
+        <li><?php echo $error ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <?php endif ?>
 
+  <form action="employee/create" method="post">
     <div>
       <label for="name">社員名</label>
       <input type="text" name='name'>
