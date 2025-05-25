@@ -15,6 +15,7 @@ class Controller
         return $content;
     }
 
+    // MVCの「V（View）」の部分を呼び出して HTML を作り、返すメソッドです。
     protected function render($variables = [], $template = null, $layout = 'layout')
     {
         $view = new View(__DIR__ . '/../views');
