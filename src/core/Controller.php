@@ -7,6 +7,7 @@ class Controller
         if (!method_exists($this, $action)) {
             throw new HttpNotFoundException('action');
         }
+        // actionの実行
         $this->$action();
     }
 }
