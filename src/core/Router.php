@@ -1,6 +1,6 @@
 <?php
 
-class Router 
+class Router
 {
     private $routes;
     public function __construct($routes)
@@ -8,6 +8,7 @@ class Router
         $this->routes = $routes;
     }
 
+    // アクセスされたURLと登録しているcontrollerとactionが合致するか確認
     public function resolve($pathInfo)
     {
         foreach ($this->routes as $path => $pattern) {
