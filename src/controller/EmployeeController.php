@@ -16,8 +16,14 @@ class EmployeeController extends Controller
         $employees = $result->fetch_all(MYSQLI_ASSOC);
 
         $mysqli->close();
-
-        include __DIR__ . '/../views/employee.php';
+        // 受け取ったあと、Responseで出力するので一旦返す
+        return $this->render(
+            [
+                'errors' => $errors,
+                'employees' => $employees,
+            ],
+            'index',
+        );
     }
 
     public function create()
@@ -48,6 +54,7 @@ class EmployeeController extends Controller
         $stmt->close();
         // リロードする事で、即時社員一覧箇所にて登録名を表示
         // これは「HTTPレスポンスヘッダーでリダイレクトを指示」しています。
+        // TODO　これはどうする？
         header('Location: /employee');
         }
 
@@ -56,8 +63,13 @@ class EmployeeController extends Controller
 
         $mysqli->close();
 
-        include __DIR__ . '/../views/employee.php';
-
+        return $this->render(
+            [
+                'errors' => $errors,
+                'employees' => $employees,
+            ],
+            'index',
+        );
     }
 
 

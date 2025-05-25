@@ -3,6 +3,7 @@
 class Router
 {
     private $routes;
+    // クラス内で引数を再利用する為に、プロパティ化する事が多い印象
     public function __construct($routes)
     {
         $this->routes = $routes;
