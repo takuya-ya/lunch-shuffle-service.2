@@ -2,6 +2,7 @@
 
 
 require_once __DIR__ . '/core/Router.php';
+require_once __DIR__ . '/core/HttpNotFoundException.php';
 require_once __DIR__ . '/controller/ShuffleController.php';
 require_once __DIR__ . '/controller/EmployeeController.php';
 
@@ -30,18 +31,30 @@ class Application
     {
     // Router クラスを使ってルーティング機能（URL解析）を準備
     // アクセスされたURLがルート定義と一致するか確認し、一致すれば対応するコントローラーとアクションを指定するクラス
-        $params = $this->router->resolve($this->getPathInfo());
-    // $path に対応するコントローラーとアクション（関数）を判定
-        $controller = $params['controller'];
-        $action = $params['action'];
+        try {
+            $params = $this->router->resolve($this->getPathInfo());
+            if (!$params) {
+                throw new HttpNotFoundException('ルーティング');
+            }
+            // $path に対応するコントローラーとアクション（関数）を判定
+            $controller = $params['controller'];
+            $action = $params['action'];
 
-        $this->runAction($controller, $action);
+            $this->runAction($controller, $action);
+
+        } catch (HttpNotFoundException) {
+            $this->render404Page();
+        }
     }
 
     // 対応するページを表示するために、コントローラーを生成してアクションの処理を実行する
     private function runAction($controllerName, $action)
     {
         $controllerClass = ucwords($controllerName) . 'Controller';
+        if (!class_exists($controllerClass)) {
+                throw new HttpNotFoundException('Controller');
+        }
+
         $controller = new $controllerClass();
         $controller->run($action);
     }
@@ -53,7 +66,6 @@ class Application
             '/shuffle' => ['controller' => 'shuffle', 'action' => 'create'],
             '/employee' => ['controller' => 'employee', 'action' => 'index'],
             '/employee/create' => ['controller' => 'employee', 'action' => 'create'],
-
         ];
     }
 
@@ -62,4 +74,25 @@ class Application
 
         return $_SERVER['REQUEST_URI'];
     }
+
+    private function render404Page()
+    {
+        header('HTTP/1.1 404 Page Not Found');
+        $content = <<<EOF
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404</title>
+</head>
+
+<body>
+    <h1>404 Page not found.</h1>
+</body>
+</html>
+
+EOF;
+        echo $content;
     }
+}
