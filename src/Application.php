@@ -1,11 +1,5 @@
 <?php
 
-
-require_once __DIR__ . '/core/Router.php';
-require_once __DIR__ . '/core/HttpNotFoundException.php';
-require_once __DIR__ . '/controller/ShuffleController.php';
-require_once __DIR__ . '/controller/EmployeeController.php';
-
 // アプリ全体のエントリーポイント（起動制御）
 // // Application クラスがインスタンス化される（__construct() が呼ばれる）
 // 　→ registerRoutes() を使ってルート定義を作成し、Router クラスを初期化。
