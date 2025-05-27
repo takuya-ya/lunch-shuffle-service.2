@@ -1,11 +1,10 @@
 {
   "name": "Part8",
   "dockerComposeFile": [
-  "../docker-compose.yml",
-  "docker-compose.yml"
+  "../docker-compose.yml"
 ],
   "service": "app",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/var/www/html",
   "forwardPorts": [
     9003
   ],
