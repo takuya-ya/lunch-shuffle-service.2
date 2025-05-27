@@ -4,8 +4,7 @@
     "../docker-compose.yml",
   ],
   "service": "app",
-  "_workspaceFolder_old": "/var/www/html",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/var/www/html",
   "forwardPorts": [
     9003
   ],
