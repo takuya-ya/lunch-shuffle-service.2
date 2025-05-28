@@ -4,36 +4,25 @@ class shuffleController extends Controller
 {
     public function index()
     {
-
-    // GETアクセス時にもエラーが出ないよう、groupsを空で初期化しておく。views/index.phpでcreate時の従業員の出力を$groups配列に入れてループで出力している。そのため、この$groupsが無いと、ループで回す配列がないとエラーになる。そのため、エラー回避の為にここで配列定義。本来であれば actionごとに適切なViewを分けて使うのが理想なので後ほど。
-        $mysqli = new mysqli('db', 'test_user', 'pass', 'test_database');
-        // バリデーション
-        if ($mysqli->connect_error) {
-            // 例外クラス：　実行中の一般的なエラー。原因が広範で、他に適切な例外がないときに使われる。
-            throw new RuntimeException('mysqli接続エラー：' . $mysqli->connect_error);
-        }
-
         // 下記でHTMLとしてreturnする為の処理を呼出している　処理内容は継承先のController.phpのrenderメソッド
         return $this->render([
             'groups' => [],
         ],);
-
     }
 
     public function create()
     {
         // groups作成条件がPOSTでのアクセス。GETの場合はここでgroupsを定義しておかないと未定義になる。
         $groups = [];
+        // // このrequestは呼出し元のApplicationでインスタンス化した物を渡して置くことで再利用できる
+        // // 渡し方の1つとしてクラス全体で共有。他のクラスでも使用するので継承元のControllerのインスタンスで取得
+        if (!$this->request->isPost()) {
+                throw new HttpNotFoundException('Getでアクセスは出来ません');
+        };
 
-        $mysqli = new mysqli('db', 'test_user', 'pass', 'test_database');
-        // バリデーション
-        if ($mysqli->connect_error) {
-        // 例外クラス：　実行中の一般的なエラー。原因が広範で、他に適切な例外がないときに使われる。
-        throw new RuntimeException('mysqli接続エラー：' . $mysqli->connect_error);
-        }
 
-        $result = $mysqli->query('SELECT name FROM employees');
-        $employees = $result->fetch_all(MYSQLI_ASSOC);
+        $employees = $this->databaseManager->get('Employee')->fetchAllNames();
+
         shuffle($employees);
         $cnt = count($employees);
 
@@ -44,9 +33,6 @@ class shuffleController extends Controller
             $groups = array_chunk($employees, 2);
             array_push($groups[0], $extra);
         }
-
-        // 動画に記載無し
-        $mysqli->close();
 
         return $this->render(
             ['groups' => $groups],

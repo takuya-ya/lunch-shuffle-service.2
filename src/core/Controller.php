@@ -3,6 +3,16 @@
 class Controller
 {
     protected $actionName;
+    protected $request;
+    protected $databaseManager;
+
+    // Applicationの他のプロパティも取得する可能性があるので、Application自体を取得
+    public function __construct($application)
+    {
+        $this->request = $application->getRequest();
+        $this->databaseManager = $application->getDatabaseManager();
+    }
+
     public function run($action)
     {
         $this->actionName = $action;
