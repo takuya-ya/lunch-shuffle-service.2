@@ -19,6 +19,7 @@ class EmployeeController extends Controller
         // 受け取ったあと、Responseで出力するので一旦返す
         return $this->render(
             [
+                'title' => '社員の登録',
                 'errors' => $errors,
                 'employees' => $employees,
             ],
@@ -52,10 +53,9 @@ class EmployeeController extends Controller
         $stmt->execute();
         // close しないと MySQL 側にステートメントが残り続ける（＝リソースリーク）
         $stmt->close();
-        // リロードする事で、即時社員一覧箇所にて登録名を表示
-        // これは「HTTPレスポンスヘッダーでリダイレクトを指示」しています。
-        // TODO　これはどうする？
-        header('Location: /employee');
+        // 「即時リダイレクトされる」わけではなく、HTTPレスポンスの一部として指示されるだけです。
+        // PHP側でURLに移動するのではなく、ブラウザに「移動してね」と伝えるだけです。その指示をブラウザが受け取って初めて実際の遷移が起こります。
+        // header('Location: /employee');
         }
 
         $result = $mysqli->query('SELECT name FROM employees');

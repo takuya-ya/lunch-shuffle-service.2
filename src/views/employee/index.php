@@ -8,7 +8,7 @@
     </ul>
     <?php endif ?>
 
-<form action="employee/create" method="post">
+<form action="/employee/create" method="post">
   <div>
     <label for="name">社員名</label>
     <input type="text" name='name'>
