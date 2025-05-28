@@ -16,6 +16,7 @@ class Controller
     }
 
     // MVCの「V（View）」の部分を呼び出して HTML を作り、返すメソッドです。
+    // templateはメソッド、アクション名
     protected function render($variables = [], $template = null, $layout = 'layout')
     {
         $view = new View(__DIR__ . '/../views');
