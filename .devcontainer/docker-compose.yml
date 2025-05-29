@@ -1,23 +1,23 @@
 services:
   app:
     build:
-      context: .
+      context: ../
       dockerfile: docker/app/Dockerfile
     ports:
       - "50082:80"
     volumes:
-    - ./src:/var/www/html
+    - ../src:/var/www/html
     depends_on:
       - db
 
   db:
     build:
-      context: .
+      context: ../
       dockerfile: docker/db/Dockerfile
     ports:
       - "6000:3306"
     volumes:
-      - ./docker/db/my.cnf:/etc/mysql/my.cnf
-      - ./docker/db/mysql_data:/var/lib/mysql
+      - ../docker/db/my.cnf:/etc/mysql/my.cnf
+      - ../docker/db/mysql_data:/var/lib/mysql
     env_file:
-      - ./docker/db/db-variables.env
+      - ../docker/db/db-variables.env
